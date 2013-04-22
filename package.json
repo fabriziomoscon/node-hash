@@ -15,8 +15,5 @@
     "mocha": "1.7.x",
     "assert": "0.4.x",
     "should": "1.2.x"
-  },
-  "engines": {
-    "node": ">=0.8.22"
   }
 }
