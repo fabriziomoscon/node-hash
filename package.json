@@ -1,7 +1,6 @@
 {
   "name": "node-hash",
   "preferGlobal": true,
-  "private": true,
   "main": "./lib/hash.coffee",
   "author": {
     "email": "mosconfabrizio@gmail.com",
