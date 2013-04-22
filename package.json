@@ -1,0 +1,22 @@
+{
+  "name": "node-hash",
+  "preferGlobal": true,
+  "private": true,
+  "version": "0.0.1",
+  "description": "Hash data structure",
+  "scripts": {
+    "test": "export NODE_ENV=testing && mocha test"
+  },
+  "dependencies": {
+    "coffee-script": "1.6.x",
+    "check-types": "0.5.x"
+  },
+  "devDependencies": {
+    "mocha": "1.7.x",
+    "assert": "0.4.x",
+    "should": "1.2.x"
+  },
+  "engines": {
+    "node": ">=0.8.22"
+  }
+}
