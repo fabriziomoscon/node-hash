@@ -5,6 +5,13 @@ node-hash
 
 Hash data structure for node.js written in CoffeeScript
 
+Install
+-------
+
+```bash
+npm install node-hash
+```
+
 Usage
 -----
 
