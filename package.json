@@ -2,7 +2,12 @@
   "name": "node-hash",
   "preferGlobal": true,
   "private": true,
-  "version": "0.0.1",
+  "main": "./lib/hash.coffee",
+  "author": {
+    "email": "mosconfabrizio@gmail.com",
+    "name": "Fabrizio Moscon"
+  },
+  "version": "0.1.0",
   "description": "Hash data structure",
   "scripts": {
     "test": "export NODE_ENV=testing && mocha test"
@@ -15,5 +20,9 @@
     "mocha": "1.7.x",
     "assert": "0.4.x",
     "should": "1.2.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabriziomoscon/node-hash.git"
   }
 }
