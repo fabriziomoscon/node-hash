@@ -1,6 +1,8 @@
 node-hash
 =========
 
+[![Build Status](https://travis-ci.org/fabriziomoscon/node-hash.png?branch=master)](https://travis-ci.org/fabriziomoscon/node-hash)
+
 Hash data structure for node.js written in CoffeeScript
 
 Usage
