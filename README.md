@@ -9,7 +9,7 @@ Usage
 -----
 
 ```JavaScript
-var Hash = require 'node-hash';
+var Hash = require( 'node-hash' );
 
 var SpecificObj = function () {
   var name = 'specific';
