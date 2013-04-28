@@ -6,7 +6,7 @@
     "email": "mosconfabrizio@gmail.com",
     "name": "Fabrizio Moscon"
   },
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Hash data structure",
   "scripts": {
     "test": "export NODE_ENV=testing && mocha test"
