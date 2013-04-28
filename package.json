@@ -16,7 +16,7 @@
     "check-types": "0.5.x"
   },
   "devDependencies": {
-    "mocha": "1.7.x",
+    "mocha": "1.9.x",
     "assert": "0.4.x",
     "should": "1.2.x"
   },
