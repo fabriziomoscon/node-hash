@@ -3,7 +3,9 @@ node-hash
 
 [![Build Status](https://travis-ci.org/fabriziomoscon/node-hash.png?branch=master)](https://travis-ci.org/fabriziomoscon/node-hash)
 
-Hash data structure for node.js written in CoffeeScript
+A super simple javascript implementation of `Hash`. As far as this module is concerned, a `Hash` is an key-value pair list of objects of the same type. This implementation doesn't try to substitute the new coming ES6 implementation for maps, but represents a much more simple and lightweight implementation.
+
+Use a node hash when you need a list of object of the same type stored by key.
 
 Install
 -------
@@ -18,26 +20,18 @@ Usage
 ```JavaScript
 var Hash = require( 'node-hash' );
 
-var SpecificObj = function () {
-  var name = 'specific';
-}
+var times = new Hash( Date );
 
-var structure = new Hash( SpecificObj );
+times.set( 'opened',  new Date() );
+times.set( 'written', new Date() );
+times.set( 'closed',  new Date() );
 
-var obj1 = new SpecificObject();
-var obj2 = new SpecificObject();
-var obj3 = new SpecificObject();
+assert( times.keys(), [ 'opened', 'written', 'closed' ] );
 
-structure.set( 'object1', obj1 );
-structure.set( 'object2', obj2 );
-structure.set( 'object3', obj3 );
+times.remove( 'written' );
 
-assert( structure.keys(), [ 'object1', 'object2', 'object3' ] );
-
-structure.remove( 'object2' );
-
-assert( structure.keys(), [ 'object1', 'object3' ] );
-assert( structure.count(), 2 );
+assert( times.keys(), [ 'opened', 'closed' ] );
+assert( times.count(), 2 );
 ```
 
 test
@@ -46,6 +40,14 @@ test
 ```bash
 npm test
 ```
+
+## Development
+
+The only dev dependency is `coffee-script` which can be installed running 'npm install' `mocha` and `should` are used in the testing suite. The coffeescript is compiled down to javascript automatically before publishing using the 'prepublish' script in 'package.json'. coffeescript files and test files are deliberately left out of the package via '.npmignore' 
+because no one likes needlessly big modules.
+
+Contributions are welcome!
+
 
 License
 -------

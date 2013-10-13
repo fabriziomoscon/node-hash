@@ -1,4 +1,4 @@
-Hash = require '../lib/hash'
+Hash = require '../src/hash'
 
 MockClass = () ->
 

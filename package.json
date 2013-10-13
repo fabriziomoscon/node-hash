@@ -1,24 +1,31 @@
 {
   "name": "node-hash",
   "preferGlobal": false,
-  "main": "./lib/hash.coffee",
+  "private": false,
+  "main": "./lib/hash",
   "author": {
     "email": "mosconfabrizio@gmail.com",
     "name": "Fabrizio Moscon"
   },
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Hash data structure",
-  "scripts": {
-    "test": "export NODE_ENV=testing && mocha test"
+  "keywords": [
+    "hash",
+    "object hash",
+    "collection hash"
+  ],
+  "bugs": {
+    "url": "https://github.com/fabriziomoscon/node-hash/issues"
   },
-  "dependencies": {
-    "coffee-script": "1.6.x",
-    "check-types": "0.5.x"
+  "license": "MIT",
+  "scripts": {
+    "prepublish": "coffee -o lib/ -c src",
+    "test": "mocha test"
   },
   "devDependencies": {
-    "mocha": "1.9.x",
-    "assert": "0.4.x",
-    "should": "1.2.x"
+    "coffee-script": "1.6.x",
+    "mocha": "1.13.x",
+    "should": "2.0.x"
   },
   "repository": {
     "type": "git",

@@ -1,20 +1,20 @@
-check = require 'check-types'
-
 class Hash
 
 
   constructor: (prototype) ->
 
-    throw new TypeError 'Invalid prototype' unless prototype instanceof Function
+    throw new TypeError 'Invalid prototype' unless typeof prototype is 'function'
 
     @_proto = prototype
     @reset()
 
 
-  reset: -> @_store = {}
+  reset: ->
+    @_store = {}
 
 
   set: (key, object) ->
+
     throw new TypeError 'Invalid key' if not (typeof key is 'string') or key is ''
     throw new TypeError 'Invalid member object' unless object instanceof @_proto
 
