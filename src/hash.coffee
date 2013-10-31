@@ -1,47 +1,62 @@
 class Hash
 
 
-  constructor: (prototype) ->
+  constructor: (prototype, keys = []) ->
 
     throw new TypeError 'Invalid prototype' unless typeof prototype is 'function'
 
     @_proto = prototype
+    @_keys = []
+    @setKeys keys
     @reset()
 
 
-  reset: ->
-    @_store = {}
+  setKeys: (keys) ->
 
+    throw new TypeError 'keys must be type array' unless Array.isArray keys
 
-  set: (key, object) ->
+    for key in keys
+      if typeof key is 'string'
+        @_keys.push key
+        @.__defineGetter__( key, () => @key || null )
+        @.__defineSetter__( key,
+          (value) =>
+            throw new TypeError 'Invalid member value' unless value instanceof @_proto
+            @key = value
+        )
 
-    throw new TypeError 'Invalid key' if not (typeof key is 'string') or key is ''
-    throw new TypeError 'Invalid member object' unless object instanceof @_proto
+  reset: () ->
 
-    @_store[key] = object
-
-
-  get: (key) ->
-    throw new TypeError 'Invalid key' if not (typeof key is 'string') or key is ''
-    return @_store[key] || null
+    for key in @_keys
+      @key = undefined
 
 
   remove: (key) ->
+
     throw new TypeError 'Invalid key' if not (typeof key is 'string') or key is ''
-    return false unless @_store[key]?
 
-    value = @_store[key]
+    return false unless @key?
 
-    delete @_store[key]
+    value = @key
+
+    @key = undefined
 
     return value
 
 
-  count: -> return @getKeys().length
+  length: () -> return @_keys.length
 
-  getData: -> return @_store
 
-  getKeys: -> return Object.keys @_store
+  getData: () ->
+
+    data = {}
+    for key in @_keys
+      data[key] = @key
+
+    return data
+
+
+  getKeys: () -> return @_keys
 
 
 module.exports = Hash
