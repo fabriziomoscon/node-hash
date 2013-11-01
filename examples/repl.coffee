@@ -1,38 +1,9 @@
 assert = require 'assert'
 
-
-class Hash
-
-
-  constructor: (prototype, keys = []) ->
-
-    throw new TypeError 'Invalid prototype' unless typeof prototype is 'function'
-
-    @_proto = prototype
-    @_store = {}
-    @setKeys keys
+Hash = require '../src/Hash'
 
 
-  setKeys: (keys) ->
-
-    throw new TypeError 'keys must be type array' unless Array.isArray keys
-
-    keys.forEach (key) =>
-
-      throw new TypeError 'Invalid key' unless typeof key is 'string'
-
-      Object.defineProperty Hash.prototype, key, {
-        get: () => return @_store[key] || null
-        set: (value) =>
-          console.log 'SET value', key, value.valueOf()
-          throw new TypeError 'Invalid member value' unless value instanceof @_proto
-          @_store[key] = value
-        enumerable: true
-        configurable: true
-      }
-
-
-a = new Hash Number, ['first', 'second', 'third']
+a = new Hash ['first', 'second', 'third'], (v) -> v instanceof Number
 
 a.first = new Number 1
 a.second = new Number 2

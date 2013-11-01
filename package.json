@@ -2,7 +2,7 @@
   "name": "node-hash",
   "preferGlobal": false,
   "private": false,
-  "main": "./lib/hash",
+  "main": "./lib/Hash",
   "author": {
     "email": "mosconfabrizio@gmail.com",
     "name": "Fabrizio Moscon"
@@ -11,6 +11,10 @@
   "description": "Hash data structure",
   "keywords": [
     "hash",
+    "typed object",
+    "list",
+    "key value",
+    "key value structure",
     "object hash",
     "collection hash"
   ],

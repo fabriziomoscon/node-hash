@@ -1,6 +1,6 @@
 should = require 'should'
 
-Hash = require '../src/hash'
+Hash = require '../src/Hash'
 
 comparator = () -> true
 
