@@ -2,7 +2,8 @@ should = require 'should'
 
 Hash = require '../src/hash'
 
-MockClass = () ->
+comparator = () -> true
+
 
 describe 'Hash', ->
 
@@ -10,16 +11,30 @@ describe 'Hash', ->
 
     describe 'failure', ->
 
-      call() for call in [null, undefined, false, -1.1, NaN, 'prototype', {}, [], new Object, new Date].map (invalid) ->
+      call() for call in [null, undefined, false, -1.1, NaN, 'prototype', {}, new Object, new Date].map (invalid) ->
         () ->
-          it "should not accept #{invalid} as prototype", ->
-            ( -> new Hash invalid ).should.throw 'Invalid prototype'
+          it "should not accept #{invalid} as comparator", ->
+            ( -> hash = new Hash ['a'], invalid ).should.throw 'Invalid comparator'
 
     describe 'success', ->
 
-      it 'should accept a valid proto function', ->
-        store = new Hash Date
-        store._proto.should.equal Date
+      it 'should accept valid keys and comparator function', ->
+        hash = new Hash ['a'], comparator
+        hash.a = 1000
+        should.exist hash._store
+        hash._comparator.should.eql comparator
+
+      # it 'should be enumerable', ->
+      #   hash = new Hash ['key1', 'key2', 'key3'], (v) -> v instanceof Date
+      #   date1 = new Date 2013, 0, 1
+      #   date2 = new Date 2014, 0, 1
+      #   date3 = new Date 2015, 0, 1
+      #   hash.key1 = date1
+      #   hash.key2 = date2
+      #   hash.key3 = date3
+
+      #   for key, value of hash._store
+      #     console.log '######', key, value
 
 
 # ----------------------------------------------------------------------
@@ -31,19 +46,25 @@ describe 'Hash', ->
       call() for call in [null, undefined, false, -1.1, NaN, 'prototype', {}, new Object, new Date].map (invalid) ->
         () ->
           it "should not accept #{invalid} as keys", ->
-            store = new Hash String
-            ( -> store.setKeys invalid ).should.throw 'keys must be type array'
+            hash = new Hash ['a'], comparator
+            ( -> hash.setKeys invalid ).should.throw 'keys must be type array'
+
+      call() for call in ['setKeys', 'reset', 'remove', 'getData', 'keys'].map (reserved) ->
+        () ->
+          it "should not define an already defined key and throw: #{reserved}", ->
+            hash = new Hash ['a'], comparator
+            ( -> hash.setKeys reserved ).should.throw()
 
     describe 'success', ->
 
       it 'should define setter and getter for the keys', ->
-        store = new Hash Date, ['first', 'second', 'third']
-        store.first = new Date 2013, 0, 1
-        store.second = new Date 2014, 0, 1
-        should.exist store.first
-        store.first.should.eql new Date 2013, 0, 1
-        should.exist store.second
-        store.second.should.eql new Date 2014, 0, 1
+        hash = new Hash ['first', 'second', 'third', '~'], (v) -> v instanceof Date
+        hash.first = new Date 2013, 0, 1
+        hash.second = new Date 2014, 0, 1
+        should.exist hash.first
+        hash.first.should.eql new Date 2013, 0, 1
+        should.exist hash.second
+        hash.second.should.eql new Date 2014, 0, 1
 
 
 # ----------------------------------------------------------------------
@@ -51,15 +72,15 @@ describe 'Hash', ->
   describe 'reset', ->
 
     it 'should reset', ->
-      store = new Hash Date, ['first', 'second']
+      hash = new Hash ['first', 'second'], (v) -> v instanceof Date
 
-      store.first = new Date
-      store.second = new Date
-      should.exist store.first
-      should.exist store.second
-      store.reset()
-      should.not.exist store.first
-      should.not.exist store.second
+      hash.first = new Date
+      hash.second = new Date
+      should.exist hash.first
+      should.exist hash.second
+      hash.reset()
+      should.not.exist hash.first
+      should.not.exist hash.second
 
 # ----------------------------------------------------------------------
 
@@ -70,72 +91,69 @@ describe 'Hash', ->
       call() for call in [null, undefined, false, -1.1, 0, 1.1, NaN, '', {}, [], new Date, new Object, () ->].map (invalid) ->
         () ->          
           it "should not accept #{invalid} as key", ->
-            store = new Hash Date
-            ( -> store.remove invalid ).should.throw 'Invalid key'
+            hash = new Hash ['a'], comparator
+            ( -> hash.remove invalid ).should.throw 'Invalid key'
 
     describe 'success', ->
 
       it 'should return false if the key does not exist', ->
-        store = new Hash Date
-        value = store.remove 'key1'
+        hash = new Hash [], comparator
+        value = hash.remove 'key1'
         value.should.be.false
 
       it 'should remove the key element', ->
-        store = new Hash Date, ['first']
-        store.first = new Date
+        hash = new Hash ['first'], (v) -> v instanceof Date
+        hash.first = new Date
 
-        store.remove 'first'
-        should.not.exist store.first
+        hash.remove 'first'
+        should.not.exist hash.first
 
       it 'should return the key element', ->
-        store = new Hash Date, ['first']
+        hash = new Hash ['first'], (v) -> v instanceof Date
 
         date = new Date
-        store.first = date
+        hash.first = date
 
-        value = store.remove 'first'
+        value = hash.remove 'first'
         value.should.eql date
-        
+
 
 # ----------------------------------------------------------------------
 
-  describe 'getKeys', ->
-
+  describe 'keys', ->
 
     it 'should return the data', ->
-      store = new Hash Date, ['key1', 'key2', 'key3']
-      store.key1 = new Date
-      store.key2 = new Date
+      hash = new Hash ['key1', 'key2', 'key3'], (v) -> v instanceof Date
+      hash.key1 = new Date
+      hash.key2 = new Date
 
-      store.getKeys().should.eql ['key1', 'key2']
+      hash.keys().should.eql ['key1', 'key2']
 
 # ----------------------------------------------------------------------
 
   describe 'length', ->
 
-
     it 'should return the correct number of keys', ->
-      store = new Hash Date, ['key1', 'key2', 'key3']
-      store.key1 = new Date
-      store.key2 = new Date
+      hash = new Hash ['key1', 'key2', 'key3'], (v) -> v instanceof Date
+      hash.key1 = new Date
+      hash.key2 = new Date
 
-      store.length().should.equal 2
+      hash.length.should.equal 2
 
 # ----------------------------------------------------------------------
 
   describe 'getData', ->
 
-    store = new Hash Date, ['key1', 'key2', 'key3']
-
     it 'should return the data', ->
+      hash = new Hash ['key1', 'key2', 'key3'], (v) -> v instanceof Date
       date1 = new Date 2013, 0, 1
       date2 = new Date 2014, 0, 1
       date3 = new Date 2015, 0, 1
-      store.key1 = date1
-      store.key2 = date2
-      store.key3 = date3
+      hash.key1 = date1
+      hash.key2 = date2
+      hash.key3 = date3
 
-      store.getData().should.eql {
+      hash.getData().should.eql {
         key1: date1
         key2: date2
         key3: date3

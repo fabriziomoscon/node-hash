@@ -17,12 +17,11 @@ class Hash
 
     throw new TypeError 'keys must be type array' unless Array.isArray keys
 
-    keys.map (key) =>
-    # for key in keys
+    keys.forEach (key) =>
 
       throw new TypeError 'Invalid key' unless typeof key is 'string'
 
-      Object.defineProperty @, key, {
+      Object.defineProperty Hash.prototype, key, {
         get: () => return @_store[key] || null
         set: (value) =>
           console.log 'SET value', key, value.valueOf()
