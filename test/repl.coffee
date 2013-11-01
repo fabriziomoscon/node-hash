@@ -1,3 +1,6 @@
+assert = require 'assert'
+
+
 class Hash
 
 
@@ -14,14 +17,15 @@ class Hash
 
     throw new TypeError 'keys must be type array' unless Array.isArray keys
 
-    # for key in keys
     keys.map (key) =>
+    # for key in keys
 
       throw new TypeError 'Invalid key' unless typeof key is 'string'
 
       Object.defineProperty @, key, {
         get: () => return @_store[key] || null
         set: (value) =>
+          console.log 'SET value', key, value.valueOf()
           throw new TypeError 'Invalid member value' unless value instanceof @_proto
           @_store[key] = value
         enumerable: true
@@ -29,29 +33,22 @@ class Hash
       }
 
 
-  reset: () -> @_store = {}
+a = new Hash Number, ['first', 'second', 'third']
 
+a.first = new Number 1
+a.second = new Number 2
+a.third = new Number 3
 
-  remove: (key) ->
+console.log 'a', a
 
-    throw new TypeError 'Invalid key' if not (typeof key is 'string') or key is ''
+console.log a.first
+console.log a.second
+console.log a.third
 
-    return false unless @_store[key]?
+console.log a.first.valueOf()
+console.log a.second.valueOf()
+console.log a.third.valueOf()
 
-    value = @_store[key]
-
-    @_store[key] = undefined
-
-    return value
-
-
-  length: () -> return Object.keys(@_store).length
-
-
-  getData: () -> return @_store
-
-
-  getKeys: () -> return Object.keys(@_store)
-
-
-module.exports = Hash
+assert.equal new Number(1), a.first.valueOf()
+assert.equal new Number(2), a.second.valueOf()
+assert.equal new Number(3), a.third.valueOf()

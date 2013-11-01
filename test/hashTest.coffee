@@ -18,8 +18,8 @@ describe 'Hash', ->
     describe 'success', ->
 
       it 'should accept a valid proto function', ->
-        store = new Hash MockClass
-        store._proto.should.equal MockClass
+        store = new Hash Date
+        store._proto.should.equal Date
 
 
 # ----------------------------------------------------------------------
@@ -37,12 +37,13 @@ describe 'Hash', ->
     describe 'success', ->
 
       it 'should define setter and getter for the keys', ->
-        store = new Hash Date
-        store.setKeys ['first', 'second']
-        store.first = new Date
-        store.second = new Date
+        store = new Hash Date, ['first', 'second', 'third']
+        store.first = new Date 2013, 0, 1
+        store.second = new Date 2014, 0, 1
         should.exist store.first
+        store.first.should.eql new Date 2013, 0, 1
         should.exist store.second
+        store.second.should.eql new Date 2014, 0, 1
 
 
 # ----------------------------------------------------------------------
@@ -69,13 +70,13 @@ describe 'Hash', ->
       call() for call in [null, undefined, false, -1.1, 0, 1.1, NaN, '', {}, [], new Date, new Object, () ->].map (invalid) ->
         () ->          
           it "should not accept #{invalid} as key", ->
-            store = new Hash MockClass
+            store = new Hash Date
             ( -> store.remove invalid ).should.throw 'Invalid key'
 
     describe 'success', ->
 
       it 'should return false if the key does not exist', ->
-        store = new Hash MockClass
+        store = new Hash Date
         value = store.remove 'key1'
         value.should.be.false
 
@@ -102,8 +103,11 @@ describe 'Hash', ->
 
 
     it 'should return the data', ->
-      store = new Hash MockClass, ['key1', 'key2', 'key3']
-      store.getKeys().should.eql ['key1', 'key2', 'key3']
+      store = new Hash Date, ['key1', 'key2', 'key3']
+      store.key1 = new Date
+      store.key2 = new Date
+
+      store.getKeys().should.eql ['key1', 'key2']
 
 # ----------------------------------------------------------------------
 
@@ -111,25 +115,28 @@ describe 'Hash', ->
 
 
     it 'should return the correct number of keys', ->
-      store = new Hash MockClass, ['key1', 'key2', 'key3']
-      store.length().should.equal 3
+      store = new Hash Date, ['key1', 'key2', 'key3']
+      store.key1 = new Date
+      store.key2 = new Date
+
+      store.length().should.equal 2
 
 # ----------------------------------------------------------------------
 
   describe 'getData', ->
 
-    store = new Hash MockClass, ['key1', 'key2', 'key3']
+    store = new Hash Date, ['key1', 'key2', 'key3']
 
     it 'should return the data', ->
-      mockInstance1 = new MockClass
-      mockInstance2 = new MockClass
-      mockInstance3 = new MockClass
-      store.key1 = mockInstance1
-      store.key2 = mockInstance2
-      store.key3 = mockInstance3
+      date1 = new Date 2013, 0, 1
+      date2 = new Date 2014, 0, 1
+      date3 = new Date 2015, 0, 1
+      store.key1 = date1
+      store.key2 = date2
+      store.key3 = date3
 
       store.getData().should.eql {
-        key1: mockInstance1
-        key2: mockInstance2
-        key3: mockInstance3
+        key1: date1
+        key2: date2
+        key3: date3
       }
