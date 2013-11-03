@@ -4,7 +4,7 @@
 
 A JavaScript implementation of `Hash` data structure. As far as this module is concerned, a `Hash` is a key-value pair list of items of the same type. It supports all primitive JavaScript types and arbitrary Objects.
 
-Use `node-hash` when you have a list of items of the same type stored by key, and you don't want to check types in you application code. You need to provide your own `comparator` function and `node-hash` will `throw` when it fails.
+Use `node-hash` when you have a list of items of the same type stored by key, and you don't want to check types in you application code. You need to provide your own `comparator` function and `node-hash` will `throw` when it fails. Generic comparator function for all JavaScript primitive types are exported as object on `Hash.comparator`.
 
 This implementation doesn't try to substitute the ES6 `map` implementation, it just represents a lightweight alternative implementation.
 
@@ -63,13 +63,9 @@ times.reset();
 ```JavaScript
 var Hash = require( 'node-hash' );
 
-var myNumberComparator = function (value) {
-  return typeof value === 'number';
-}
-
 var dailyStats = new Hash(
   ['min', 'max', 'avg', 'samples'],
-  myNumberComparator
+  Hash.comparator.number
 );
 
 dailyStats.min = 0;
@@ -78,6 +74,47 @@ dailyStats.samples = 1000;
 dailyStats.samples = 4.3445345;
 ```
 
+## marshall
+
+A member function that converts a `node-hash` into a plain Javascript object ready to be serialized. Custom marhall function can be passed as argument
+
+```JavaScript
+var hash = new Hash(
+  ['key1', 'key2', 'key3'],
+  Hash.comparator.Date
+);
+hash.key1 = new Date();
+
+// {key1: new Date()}
+hash.marshall();
+
+// {key1: timestamp}
+hash.marshall( function (date) {
+  return date.getTime();
+});
+```
+
+## unmarshall
+
+A static non-member function that converts a plain Javascript object into a `node-hash` using `Hash.unmarshall`. Custom unmarshall function can be passed as argument.
+
+```JavaScript
+// data is a node-hash
+var data = Hash.unmarshall(
+  { key1: new Date(2013, 0, 1) },
+  Hash.comparator.Date
+);
+
+// data is a node-hash
+var data = Hash.unmarshall(
+  { key1: (new Date(2013, 0, 1)).getTime() },
+  Hash.comparator.Date,
+  function (time) {
+    return new Date(time);
+  }
+);
+
+```
 ## test
 
 ```bash

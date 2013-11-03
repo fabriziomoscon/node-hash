@@ -1,4 +1,5 @@
-comparator = require '../src/comparator'
+comparator = require('../src/Hash').comparator
+
 
 describe 'comparator', ->
 

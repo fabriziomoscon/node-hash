@@ -1,3 +1,5 @@
+check = require 'check-types'
+
 comparator = require './comparator'
 
 
@@ -68,6 +70,29 @@ class Hash
 
   keys: () -> return Object.keys(@_store)
 
+
+  marshall: (marshallFunction = (v) -> v) ->
+
+    throw new TypeError 'Invalid marshall function' unless typeof marshallFunction is 'function'
+
+    data = {}
+    @keys().forEach (k) =>
+      data[k] = marshallFunction @_store[k]
+
+    return data
+
+
+Hash.unmarshall = (dataHash, comparator, unmarshallFunction = (v) -> v) ->
+
+  throw new TypeError 'Invalid unmarshall function' unless typeof unmarshallFunction is 'function'
+
+  hash = new Hash Object.keys(dataHash), comparator
+
+  if dataHash? and check.object dataHash
+    Object.keys(dataHash).forEach (k) =>
+      hash[k] = unmarshallFunction dataHash[k]
+
+  return hash
 
 
 module.exports = Hash
