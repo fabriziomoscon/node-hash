@@ -84,6 +84,7 @@ class Hash
 
 Hash.unmarshall = (dataHash, comparator, unmarshallFunction = (v) -> v) ->
 
+  throw new TypeError 'Invalid dataHash' unless check.object dataHash
   throw new TypeError 'Invalid unmarshall function' unless typeof unmarshallFunction is 'function'
 
   hash = new Hash Object.keys(dataHash), comparator

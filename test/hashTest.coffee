@@ -217,6 +217,11 @@ describe 'Hash', ->
 
     describe 'failures', ->
 
+      call() for call in [null, undefined, false, 1, NaN, ''].map (invalid) ->
+        () ->
+          it "should not accept #{invalid} as data hash", ->
+            (-> Hash.unmarshall invalid, Hash.comparator.string).should.throw 'Invalid dataHash'
+
       call() for call in [false, 1, NaN, '', [], {}, new Object, new Date].map (invalid) ->
         () ->
           it "should not accept #{invalid} as unmarshall function", ->
