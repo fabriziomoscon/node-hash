@@ -16,18 +16,16 @@ npm install node-hash
 
 ## Usage
 
+ Keys must be defined at contruct time, as the library uses `Object.defineProperty` to define getter and setter correctly.
+
 ### Hash of `Date`
 
 ```JavaScript
 var Hash = require( 'node-hash' );
 
-var myDateComparator = function (value) {
-  return value instanceof Date;
-}
-
 var times = new Hash(
   ['created_at', 'last_seen', 'last_modified', 'future_action_at'],
-  myDateComparator
+  Hash.comparator.Date
 );
 
 // uses a predefined setter which will use the `comparator` function to check the value type

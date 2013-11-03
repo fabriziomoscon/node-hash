@@ -1,3 +1,6 @@
+comparator = require './comparator'
+
+
 class Hash
 
 
@@ -8,6 +11,8 @@ class Hash
     'getData'
     'keys'
   ]
+
+  @comparator = comparator
 
 
   constructor: (keys = [], comparator) ->
@@ -62,6 +67,7 @@ class Hash
 
 
   keys: () -> return Object.keys(@_store)
+
 
 
 module.exports = Hash
