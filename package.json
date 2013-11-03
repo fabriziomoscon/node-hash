@@ -26,6 +26,9 @@
     "prepublish": "coffee -o lib/ -c src",
     "test": "mocha test"
   },
+  "dependencies": {
+    "check-types": "1.1.x"
+  },
   "devDependencies": {
     "coffee-script": "1.6.x",
     "mocha": "1.13.x",
