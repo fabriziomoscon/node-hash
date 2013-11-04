@@ -22,18 +22,6 @@ describe 'Hash', ->
         should.exist hash._store
         hash._comparator.should.eql Hash.comparator.string
 
-      # it 'should be enumerable', ->
-      #   hash = new Hash ['key1', 'key2', 'key3'], Hash.comparator.Date
-      #   date1 = new Date 2013, 0, 1
-      #   date2 = new Date 2014, 0, 1
-      #   date3 = new Date 2015, 0, 1
-      #   hash.key1 = date1
-      #   hash.key2 = date2
-      #   hash.key3 = date3
-
-      #   for key, value of hash._store
-      #     console.log '######', key, value
-
 
 # ----------------------------------------------------------------------
 

@@ -71,12 +71,12 @@ var dailyStats = new Hash(
 dailyStats.min = 0;
 dailyStats.min = 10;
 dailyStats.samples = 1000;
-dailyStats.samples = 4.3445345;
+dailyStats.avg = 4.3445345;
 ```
 
 ## marshall
 
-A member function that converts a `node-hash` into a plain Javascript object ready to be serialized. Custom marhall function can be passed as argument
+A member function that converts a `node-hash` into a plain Javascript object ready to be serialized. A custom `marhall` function can be passed as argument.
 
 ```JavaScript
 var hash = new Hash(
@@ -96,7 +96,7 @@ hash.marshall( function (date) {
 
 ## unmarshall
 
-A static non-member function that converts a plain Javascript object into a `node-hash` using `Hash.unmarshall`. Custom unmarshall function can be passed as argument.
+A static non-member function that converts a plain Javascript object into a `node-hash` using `Hash.unmarshall`. A custom `unmarshall` function can be passed as argument.
 
 ```JavaScript
 // data is a node-hash
@@ -123,7 +123,7 @@ npm test
 
 ## Development
 
-The dev dependencies are `coffee-script` `mocha` and `should`. The coffeescript is compiled down to javascript automatically before publishing using the 'prepublish' script in 'package.json'. coffeescript files and test files are deliberately left out of the package via '.npmignore' because no one likes needlessly big modules.
+The dev dependencies are `coffee-script`, `mocha` and `should`. The coffeescript is compiled down to javascript automatically before publishing using the 'prepublish' script in 'package.json'. coffeescript files and test files are deliberately left out of the package via '.npmignore' because no one likes needlessly big modules.
 
 Contributions are welcome!
 
