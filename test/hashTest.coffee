@@ -19,7 +19,6 @@ describe 'Hash', ->
       it 'should accept valid keys and comparator function', ->
         hash = new Hash ['a'], Hash.comparator.string
         hash.a = 'a simple string'
-        should.exist hash._store
         hash._comparator.should.eql Hash.comparator.string
 
 
@@ -74,7 +73,7 @@ describe 'Hash', ->
 
     describe 'failure', ->
 
-      call() for call in [null, undefined, false, -1.1, 0, 1.1, NaN, '', {}, [], new Date, new Object, () ->].map (invalid) ->
+      call() for call in [null, undefined, false, -1.1, 0, 1.1, NaN, {}, [], new Date, new Object, () ->].map (invalid) ->
         () ->          
           it "should not accept #{invalid} as key", ->
             hash = new Hash ['a'], Hash.comparator.string
@@ -108,12 +107,12 @@ describe 'Hash', ->
 
   describe 'keys', ->
 
-    it 'should return the data', ->
+    it 'should return the keys', ->
       hash = new Hash ['key1', 'key2', 'key3'], Hash.comparator.Date
       hash.key1 = new Date
       hash.key2 = new Date
 
-      hash.keys().should.eql ['key1', 'key2']
+      hash.keys().should.eql ['key1', 'key2', 'key3']
 
 # ----------------------------------------------------------------------
 
@@ -124,7 +123,7 @@ describe 'Hash', ->
       hash.key1 = new Date
       hash.key2 = new Date
 
-      hash.length.should.equal 2
+      hash.length.should.equal 3
 
 # ----------------------------------------------------------------------
 
@@ -197,6 +196,27 @@ describe 'Hash', ->
           key1: date1.getTime()
           key2: date2.getTime()
           key3: date3.getTime()
+        }
+
+      it 'should not marshall undefined keys', ->
+        hash = new Hash ['key1', 'key2', 'key3'], Hash.comparator.Date
+        date1 = new Date 2013, 0, 1
+        date2 = new Date 2014, 0, 1
+        date3 = new Date 2015, 0, 1
+        hash.key1 = date1
+        hash.key2 = date2
+
+        data = hash.marshall (d) -> d.getTime()
+        data.should.eql {
+          key1: date1.getTime()
+          key2: date2.getTime()
+        }
+
+        hash.remove 'key1'
+
+        data = hash.marshall (d) -> d.getTime()
+        data.should.eql {
+          key2: date2.getTime()
         }
 
 # ----------------------------------------------------------------------

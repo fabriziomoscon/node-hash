@@ -44,14 +44,14 @@ console.log( times.created_at );
 // returns the internal key-value store
 console.log( times.getData() );
 
-// returns only the used keys
-assert( times.keys(), ['created_at', 'last_seen', 'last_modified'] );
+// returns all the keys passed to the contructor
+assert( times.keys(), ['created_at', 'last_seen', 'last_modified', 'future_action_at'] );
 
 // returns the value of the removed key, or false if the key is not used
 times.remove( 'last_modified' );
 
-// returns the number of used keys
-assert( times.length, 3 );
+// returns the number of keys
+assert( times.length, 4 );
 
 // resets the hash
 times.reset();

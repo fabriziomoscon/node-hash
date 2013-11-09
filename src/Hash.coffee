@@ -21,12 +21,12 @@ class Hash
 
     throw new TypeError 'Invalid comparator' unless typeof comparator is 'function'
 
-    @_store = {}
+    @_keys = keys
     @setKeys keys
     @_comparator = comparator
 
     Object.defineProperty @, 'length', {
-      get: () => Object.keys(@_store).length
+      get: () -> keys.length
     }
 
 
@@ -40,35 +40,41 @@ class Hash
       throw new TypeError "`#{key}` is already defined" if key in Hash.RESERVED_KEY_NAMES
 
       Object.defineProperty Hash.prototype, key, {
-        get: () => return @_store[key] || null
+        get: () => return @["_#{key}"] || null
         set: (value) =>
           throw new TypeError 'Invalid type of member' unless @_comparator value
-          @_store[key] = value
+          @["_#{key}"] = value
         enumerable: true
         configurable: true
       }
 
 
-  reset: () -> @_store = {}
+  reset: () ->
+    @_keys.forEach (key) => @["_#{key}"] = undefined
 
 
   remove: (key) ->
 
-    throw new TypeError 'Invalid key' if not (typeof key is 'string') or key is ''
+    throw new TypeError 'Invalid key' unless typeof key is 'string'
 
-    return false unless @_store[key]?
+    return false unless @["_#{key}"]?
 
-    value = @_store[key]
+    value = @["_#{key}"]
 
-    @_store[key] = undefined
+    @["_#{key}"] = undefined
 
     return value
 
 
-  getData: () -> return @_store
+  getData: () ->
 
+    data = {}
+    @_keys.forEach (key) =>
+      data[key] = @["_#{key}"]
 
-  keys: () -> return Object.keys(@_store)
+    return data
+
+  keys: () -> return @_keys
 
 
   marshall: (marshallFunction = (v) -> v) ->
@@ -76,8 +82,9 @@ class Hash
     throw new TypeError 'Invalid marshall function' unless typeof marshallFunction is 'function'
 
     data = {}
-    @keys().forEach (k) =>
-      data[k] = marshallFunction @_store[k]
+    @_keys.forEach (key) =>
+      if @["_#{key}"]?
+        data[key] = marshallFunction @["_#{key}"]
 
     return data
 
