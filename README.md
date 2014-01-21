@@ -1,7 +1,9 @@
 # node-hash
 
 **Current Version:** *1.1.0*
+
 **Build Status:** [![Build Status](https://travis-ci.org/fabriziomoscon/node-hash.png?branch=master)](https://travis-ci.org/fabriziomoscon/node-hash)
+
 **Node Support:** *0.8* *0.10* *0.11*
 
 A JavaScript implementation of `Hash` data structure. As far as this module is concerned, a `Hash` is a key-value pair list of items of the same type. It supports all primitive JavaScript types and arbitrary Objects.
