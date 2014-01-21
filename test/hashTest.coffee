@@ -14,6 +14,11 @@ describe 'Hash', ->
           it "should not accept #{invalid} as comparator", ->
             ( -> hash = new Hash ['a'], invalid ).should.throw 'Invalid comparator'
 
+      call() for call in [false, -1.1, NaN, {}, new Object, new Date, () ->].map (invalid) ->
+        () ->
+          it "should not accept #{invalid} as initial value for `string`", ->
+            ( -> new Hash ['a'], Hash.comparator.string, invalid ).should.throw()
+
     describe 'success', ->
 
       it 'should accept valid keys and comparator function', ->
@@ -21,6 +26,13 @@ describe 'Hash', ->
         hash.a = 'a simple string'
         hash._comparator.should.eql Hash.comparator.string
 
+      it 'should accept an initial string value', ->
+        hash = new Hash(['a'], Hash.comparator.string, '')
+        hash.a.should.equal ''
+
+      it 'should accept an initial array value', ->
+        hash = new Hash(['calendar'], Hash.comparator.Array, [])
+        hash.calendar.should.eql []
 
 # ----------------------------------------------------------------------
 

@@ -17,13 +17,17 @@ class Hash
   @comparator = comparator
 
 
-  constructor: (keys = [], comparator) ->
+  constructor: (keys = [], comparator, initialValue) ->
 
     throw new TypeError 'Invalid comparator' unless typeof comparator is 'function'
 
     @_keys = keys
-    @setKeys keys
+    @setKeys(keys)
     @_comparator = comparator
+
+    if initialValue?
+      for key in keys
+        @["#{key}"] = initialValue
 
     Object.defineProperty @, 'length', {
       get: () -> keys.length
@@ -40,7 +44,7 @@ class Hash
       throw new TypeError "`#{key}` is already defined" if key in Hash.RESERVED_KEY_NAMES
 
       Object.defineProperty Hash.prototype, key, {
-        get: () => return @["_#{key}"] || null
+        get: () => return @["_#{key}"]
         set: (value) =>
           throw new TypeError 'Invalid type of member' unless @_comparator value
           @["_#{key}"] = value
@@ -49,8 +53,8 @@ class Hash
       }
 
 
-  reset: () ->
-    @_keys.forEach (key) => @["_#{key}"] = undefined
+  reset: (value) ->
+    @_keys.forEach (key) => @["_#{key}"] = value
 
 
   remove: (key) ->

@@ -1,5 +1,8 @@
 # node-hash
 
+Version: 1.1.0
+Works in node: 0.8, 0.10, 0.11
+
 [![Build Status](https://travis-ci.org/fabriziomoscon/node-hash.png?branch=master)](https://travis-ci.org/fabriziomoscon/node-hash)
 
 A JavaScript implementation of `Hash` data structure. As far as this module is concerned, a `Hash` is a key-value pair list of items of the same type. It supports all primitive JavaScript types and arbitrary Objects.
@@ -16,7 +19,7 @@ npm install node-hash
 
 ## Usage
 
- Keys must be defined at contruct time, as the library uses `Object.defineProperty` to define getter and setter correctly.
+Keys must be defined at construct time, as the library uses `Object.defineProperty` to define getter and setter correctly. The constructor take a comparator function used to check the value inserted into the Hash. You might also set an initial value to all keys passing the third parameter.
 
 ### Hash of `Date`
 
@@ -25,7 +28,8 @@ var Hash = require( 'node-hash' );
 
 var times = new Hash(
   ['created_at', 'last_seen', 'last_modified', 'future_action_at'],
-  Hash.comparator.Date
+  Hash.comparator.Date,
+  new Date()
 );
 
 // uses a predefined setter which will use the `comparator` function to check the value type
