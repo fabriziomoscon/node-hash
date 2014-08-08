@@ -75,13 +75,10 @@ describe 'comparator', ->
         it "should return false for #{invalid}", ->
           comparator.number(invalid).should.be.false
 
-    it 'should return true for number', ->
-      comparator.number(1).should.be.true
-      comparator.number(-10).should.be.true
-      comparator.number(1.1).should.be.true
-      comparator.number(0x1234).should.be.true
-      comparator.number(Infinity).should.be.true
-      comparator.number(-Infinity).should.be.true
+    call() for call in [0, 1, -10, 1.1, 0x1234].map (valid) ->
+      () ->
+        it "should return true for #{valid}", ->
+          comparator.number(valid).should.be.true
 
 # ---------------------------------------------------------------
 

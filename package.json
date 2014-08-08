@@ -7,7 +7,7 @@
     "email": "mosconfabrizio@gmail.com",
     "name": "Fabrizio Moscon"
   },
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "Hash data structure",
   "keywords": [
     "hash",
@@ -27,12 +27,12 @@
     "test": "mocha test"
   },
   "dependencies": {
-    "check-types": "1.1.x"
+    "check-types": "1.3.x"
   },
   "devDependencies": {
     "coffee-script": "1.6.x",
-    "mocha": "1.14.x",
-    "should": "2.0.x"
+    "mocha": "1.21.x",
+    "should": "4.0.x"
   },
   "repository": {
     "type": "git",

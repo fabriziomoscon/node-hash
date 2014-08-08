@@ -18,12 +18,13 @@ npm install node-hash
 
 ## Usage
 
-Keys must be defined at construct time, as the library uses `Object.defineProperty` to define getter and setter correctly. The constructor take a comparator function used to check the value inserted into the Hash. You might also set an initial value to all keys passing the third parameter.
+The keys cannot be defined dynamically, but must be defined at construct time, since the library uses `Object.defineProperty` to define getters and setters correctly. The constructor also takes a comparator function used to check the value inserted into the Hash. You might also set an initial value to all keys, passing the third parameter.
 
-### Hash of `Date`
+### Hash of Date
 
 ```JavaScript
-var Hash = require( 'node-hash' );
+var assert = require('assert');
+var Hash = require('node-hash');
 
 var times = new Hash(
   ['created_at', 'last_seen', 'last_modified', 'future_action_at'],
@@ -37,15 +38,24 @@ times.last_seen = new Date();
 times.last_modified = new Date();
 
 // these will all throw
-times.last_seen = 'yesterday'
-times.last_seen = 100
-times.last_seen = []
+assert.throws( function() { times.last_seen = 'yesterday' } );
+assert.throws( function() { times.last_seen = 100 } );
+assert.throws( function() { times.last_seen = [] } );
 
 // uses a predefined getter
 console.log( times.created_at );
+// Fri Aug 08 2014 11:31:04 GMT+0100 (BST)
 
 // returns the internal key-value store
 console.log( times.getData() );
+/*
+{
+  created_at: Fri Aug 08 2014 11:31:04 GMT+0100 (BST),
+  last_seen: Fri Aug 08 2014 11:31:04 GMT+0100 (BST),
+  last_modified: Fri Aug 08 2014 11:31:04 GMT+0100 (BST),
+  future_action_at: Fri Aug 08 2014 11:31:04 GMT+0100 (BST)
+}
+*/
 
 // returns all the keys passed to the contructor
 assert( times.keys(), ['created_at', 'last_seen', 'last_modified', 'future_action_at'] );
@@ -58,10 +68,9 @@ assert( times.length, 4 );
 
 // resets the hash
 times.reset();
-
 ```
 
-### Hash of `number`
+### Hash of number
 
 ```JavaScript
 var Hash = require( 'node-hash' );
